@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { getUsers } from 'actions/user.action';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import Login from 'views/Login/Login';
+import Register from 'views/Register/Register';
+import Todos from 'views/Todos/Todos';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  const user = useSelector(state => state.auth.user);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getUsers());
+  })
+
+  return (
+    <Router>
+      <Route exact path="/" >
+        {user && isLoggedIn ? <Redirect to="/todos" /> : <Redirect to="/login" />}
+      </Route>
+      <Route path="/register">
+        <Register />
+      </Route>
+      <Route path="/login">
+        <Login />
+      </Route>
+      <Route path="/todos">
+        <Todos />
+      </Route>
+
+    </Router>
+  )
+}
 export default App;
