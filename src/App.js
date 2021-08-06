@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <Route exact path="/" >
-        {user && isLoggedIn ? <Redirect to="/todos" /> : <Redirect to="/login" />}
+        {user && isSignedIn ? <Redirect to="/todos" /> : <Redirect to="/login" />}
       </Route>
       <Route path="/register">
         <Register />
